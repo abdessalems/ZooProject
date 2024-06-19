@@ -1,17 +1,28 @@
 package com.example.zootest.model;
 
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+
 
 @Data
 public class Animal {
     private Long id;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @NotBlank(message = "Species is required")
     private String species;
-    private int age;
+
+    @NotNull(message = "Age is required")
+    private Integer age;
+
+    @NotNull(message = "Enclosure ID is required")
     private Long enclosureId; // ID de l'enclos assigné
 
-    public Animal(Long id, String name, String species, int age, Long enclosureId) {
+    public Animal(Long id, String name, String species, Integer age, Long enclosureId) {
         this.id = id;
         this.name = name;
         this.species = species;
@@ -20,45 +31,5 @@ public class Animal {
     }
 
     public Animal() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Long getEnclosureId() {
-        return enclosureId;
-    }
-
-    public void setEnclosureId(Long enclosureId) {
-        this.enclosureId = enclosureId;
     }
 }
