@@ -12,9 +12,9 @@ import java.util.Optional;
 public class VisitRepository {
     private List<Visit> visits = new ArrayList<>();
 
-    public List<Visit> findAll() {
-        return visits;
-    }
+    public List<Visit> findAll()
+
+
 
     public Optional<Visit> findById(Long id) {
         return visits.stream().filter(visit -> visit.getId().equals(id)).findFirst();
