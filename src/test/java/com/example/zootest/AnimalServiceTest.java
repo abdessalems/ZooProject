@@ -38,4 +38,6 @@ public class AnimalServiceTest {
             animalService.addAnimal(animal);
         });
     }
+
+
 }
