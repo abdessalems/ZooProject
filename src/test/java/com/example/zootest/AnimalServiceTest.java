@@ -1,7 +1,5 @@
 package com.example.zootest;
 
-
-
 import com.example.zootest.model.Animal;
 import com.example.zootest.repository.AnimalRepository;
 import com.example.zootest.service.AnimalService;
@@ -13,16 +11,17 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class AnimalServiceTest {
 
-    @InjectMocks
-    private AnimalService animalService;
-
     @Mock
     private AnimalRepository animalRepository;
+
+    @InjectMocks
+    private AnimalService animalService;
 
     @BeforeEach
     void setUp() {
@@ -30,14 +29,13 @@ public class AnimalServiceTest {
     }
 
     @Test
-    public void testFindById() {
-        Animal animal = new Animal();
-        animal.setId(1L);
-        animal.setName("Lion");
+    public void testSaveAnimal_ThrowsException() {
+        Animal animal = new Animal(1L, "Lion", "Panthera leo", 5, 1L);
 
-        when(animalRepository.findById(1L)).thenReturn(Optional.of(animal));
+        when(animalRepository.findById(any())).thenReturn(Optional.of(animal));
 
-        Optional<Animal> found = animalService.findById(1L);
-        assertEquals("Lion", found.get().getName());
+        assertThrows(InvalidOperationException.class, () -> {
+            animalService.addAnimal(animal);
+        });
     }
 }
