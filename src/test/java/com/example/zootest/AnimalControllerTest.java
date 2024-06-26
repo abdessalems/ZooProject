@@ -2,6 +2,7 @@ package com.example.zootest;
 
 import com.example.zootest.controller.AnimalController;
 import com.example.zootest.model.Animal;
+import com.example.zootest.model.Species;
 import com.example.zootest.service.AnimalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -43,8 +46,7 @@ public class AnimalControllerTest {
     @Test
     public void testGetAnimalById() throws Exception {
         Long animalId = 1L;
-        Animal animal = new Animal(animalId, "Lion", "Panthera leo", 5, 1L);
-
+        Animal animal = new Animal(animalId, "Lion", Species.LION, LocalDate.of(2016, 1, 15), 1L);
         when(animalService.findById(animalId)).thenReturn(java.util.Optional.of(animal));
 
         mockMvc.perform(get("/animals/{id}", animalId))
@@ -53,7 +55,7 @@ public class AnimalControllerTest {
 
     @Test
     public void testAddAnimal() throws Exception {
-        Animal animal = new Animal(null, "Lion", "Panthera leo", 5, 1L);
+        Animal animal = new Animal(null, "Lion", Species.LION, LocalDate.of(2016, 1, 15), 1L);
 
         mockMvc.perform(post("/animals")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,7 +66,7 @@ public class AnimalControllerTest {
     @Test
     public void testUpdateAnimal() throws Exception {
         Long animalId = 1L;
-        Animal animal = new Animal(animalId, "Lion", "Panthera leo", 5, 1L);
+        Animal animal = new Animal(null, "Lion", Species.LION, LocalDate.of(2016, 1, 15), 1L);
 
         mockMvc.perform(put("/animals/{id}", animalId)
                         .contentType(MediaType.APPLICATION_JSON)

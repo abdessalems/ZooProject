@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,7 +44,8 @@ public class EnclosureControllerTest {
     @Test
     public void testGetEnclosureById() throws Exception {
         Long enclosureId = 1L;
-        Enclosure enclosure = new Enclosure(enclosureId, "Lion Enclosure", "large", List.of("Panthera leo", "Panthera tigris"));
+        Enclosure enclosure = new Enclosure(enclosureId, "Lion Enclosure", "large",
+                List.of("Panthera leo", "Panthera tigris"), List.of(1L, 2L));
 
         when(enclosureService.findById(enclosureId)).thenReturn(java.util.Optional.of(enclosure));
 
@@ -55,22 +55,24 @@ public class EnclosureControllerTest {
 
     @Test
     public void testAddEnclosure() throws Exception {
-        Enclosure enclosure = new Enclosure(null, "Lion Enclosure", "large", List.of("Panthera leo", "Panthera tigris"));
+        Enclosure enclosure = new Enclosure(null, "Lion Enclosure", "large",
+                List.of("Panthera leo", "Panthera tigris"), List.of());
 
         mockMvc.perform(post("/enclosures")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"name\": \"Lion Enclosure\", \"size\": \"large\", \"allowedSpecies\": [\"Panthera leo\", \"Panthera tigris\"] }"))
+                        .content("{ \"name\": \"Lion Enclosure\", \"size\": \"large\", \"allowedSpecies\": [\"Panthera leo\", \"Panthera tigris\"], \"animalIds\": [] }"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void testUpdateEnclosure() throws Exception {
         Long enclosureId = 1L;
-        Enclosure enclosure = new Enclosure(enclosureId, "Lion Enclosure", "large", List.of("Panthera leo", "Panthera tigris"));
+        Enclosure enclosure = new Enclosure(enclosureId, "Lion Enclosure", "large",
+                List.of("Panthera leo", "Panthera tigris"), List.of(1L, 2L));
 
         mockMvc.perform(put("/enclosures/{id}", enclosureId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"id\": 1, \"name\": \"Lion Enclosure\", \"size\": \"large\", \"allowedSpecies\": [\"Panthera leo\", \"Panthera tigris\"] }"))
+                        .content("{ \"id\": 1, \"name\": \"Lion Enclosure\", \"size\": \"large\", \"allowedSpecies\": [\"Panthera leo\", \"Panthera tigris\"], \"animalIds\": [1, 2] }"))
                 .andExpect(status().isOk());
     }
 
@@ -84,4 +86,3 @@ public class EnclosureControllerTest {
                 .andExpect(status().isOk());
     }
 }
-

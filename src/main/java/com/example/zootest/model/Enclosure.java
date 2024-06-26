@@ -2,12 +2,16 @@ package com.example.zootest.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 
 import java.util.List;
 
 @Data
+@Getter
+@Setter
+@AllArgsConstructor
+@ToString
 public class Enclosure {
     private Long id;
 
@@ -22,54 +26,4 @@ public class Enclosure {
 
     private List<Long> animalIds; // IDs des animaux dans cet enclos
 
-    public Enclosure() {
-    }
-
-    public Enclosure(Long id, String name, String size, List<String> allowedSpecies) {
-        this.id = id;
-        this.name = name;
-        this.size = size;
-        this.allowedSpecies = allowedSpecies;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public List<String> getAllowedSpecies() {
-        return allowedSpecies;
-    }
-
-    public void setAllowedSpecies(List<String> allowedSpecies) {
-        this.allowedSpecies = allowedSpecies;
-    }
-
-    public List<Long> getAnimalIds() {
-        return animalIds;
-    }
-
-    public void setAnimalIds(List<Long> animalIds) {
-        this.animalIds = animalIds;
-    }
 }
