@@ -58,4 +58,37 @@ public class VisitService {
             }
         }
     }
+
+    // Assign an enclosure to a visit
+    public void assignEnclosureToVisit(Long visitId, Long enclosureId) {
+        Optional<Visit> optionalVisit = visitRepository.findById(visitId);
+        if (optionalVisit.isEmpty()) {
+            throw new InvalidOperationException("Visit not found for id: " + visitId);
+        }
+
+        Visit visit = optionalVisit.get();
+        if (visit.getEnclosureIds().contains(enclosureId)) {
+            throw new InvalidOperationException("Enclosure " + enclosureId + " is already assigned to visit " + visitId);
+        }
+
+        visit.getEnclosureIds().add(enclosureId);
+        validateVisitEnclosures(visit); // Validate after adding enclosure
+        visitRepository.save(visit);
+    }
+
+    // Remove an enclosure from a visit
+    public void removeEnclosureFromVisit(Long visitId, Long enclosureId) {
+        Optional<Visit> optionalVisit = visitRepository.findById(visitId);
+        if (optionalVisit.isEmpty()) {
+            throw new InvalidOperationException("Visit not found for id: " + visitId);
+        }
+
+        Visit visit = optionalVisit.get();
+        if (!visit.getEnclosureIds().contains(enclosureId)) {
+            throw new InvalidOperationException("Enclosure " + enclosureId + " is not assigned to visit " + visitId);
+        }
+
+        visit.getEnclosureIds().remove(enclosureId);
+        visitRepository.save(visit);
+    }
 }

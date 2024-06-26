@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @ToString
+@NoArgsConstructor
 public class Visit {
     private Long id;
 

@@ -1,6 +1,5 @@
 package com.example.zootest.service;
 
-
 import com.example.zootest.InvalidOperationException;
 import com.example.zootest.model.Enclosure;
 import com.example.zootest.repository.EnclosureRepository;
@@ -47,5 +46,32 @@ public class EnclosureService {
         } else {
             throw new InvalidOperationException("Enclosure not found for id: " + id);
         }
+    }
+
+    // Add an animal to an enclosure
+    public void addAnimalToEnclosure(Long enclosureId, Long animalId) {
+        Optional<Enclosure> enclosure = enclosureRepository.findById(enclosureId);
+        if (enclosure.isEmpty()) {
+            throw new InvalidOperationException("Enclosure not found for id: " + enclosureId);
+        }
+
+        Enclosure updatedEnclosure = enclosure.get();
+        updatedEnclosure.getAnimalIds().add(animalId);
+        enclosureRepository.save(updatedEnclosure);
+    }
+
+    // Remove an animal from an enclosure
+    public void removeAnimalFromEnclosure(Long enclosureId, Long animalId) {
+        Optional<Enclosure> enclosure = enclosureRepository.findById(enclosureId);
+        if (enclosure.isEmpty()) {
+            throw new InvalidOperationException("Enclosure not found for id: " + enclosureId);
+        }
+
+        Enclosure updatedEnclosure = enclosure.get();
+        if (!updatedEnclosure.getAnimalIds().remove(animalId)) {
+            throw new InvalidOperationException("Animal " + animalId + " not found in enclosure " + enclosureId);
+        }
+
+        enclosureRepository.save(updatedEnclosure);
     }
 }

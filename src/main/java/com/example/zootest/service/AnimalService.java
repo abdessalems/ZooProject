@@ -43,15 +43,26 @@ public class AnimalService {
 
     // Delete an animal by ID
     public void deleteAnimal(Long id) {
-        animalRepository.deleteById(id);
+        animalRepository.findById(id).ifPresentOrElse(
+                animal -> animalRepository.deleteById(id),
+                () -> {
+                    throw new InvalidOperationException("Animal not found for id: " + id);
+                }
+        );
     }
 
     // Validate if the animal can be assigned to the specified enclosure
     private void validateAnimalEnclosure(Animal animal) {
-        Optional<Enclosure> enclosure = enclosureService.findById(animal.getEnclosureId());
-        if (!enclosure.isPresent()) {
-            throw new InvalidOperationException("Enclosure not found for id: " + animal.getEnclosureId());
+        Long enclosureId = animal.getEnclosureId();
+        if (enclosureId == null) {
+            throw new InvalidOperationException("Enclosure ID is required for adding/updating an animal.");
         }
+
+        Optional<Enclosure> enclosure = enclosureService.findById(enclosureId);
+        if (enclosure.isEmpty()) {
+            throw new InvalidOperationException("Enclosure not found for id: " + enclosureId);
+        }
+
         if (!enclosure.get().getAllowedSpecies().contains(animal.getSpecies())) {
             throw new InvalidOperationException("Species " + animal.getSpecies() + " not allowed in enclosure " + enclosure.get().getName());
         }

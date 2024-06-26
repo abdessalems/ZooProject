@@ -26,4 +26,7 @@ public class Enclosure {
 
     private List<Long> animalIds; // IDs des animaux dans cet enclos
 
+    public Enclosure() {
+
+    }
 }
